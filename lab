@@ -1,0 +1,61 @@
+def bubbleSort(arr):
+    length = len(arr)
+
+    for i in range(length):
+        for j in range(0, length - i - 1):
+            if arr[j] > arr[j + 1]:
+                temp = arr[j]
+                arr[j] = arr[j+1]
+                arr[j+1] = temp
+
+arr = [314, 374, 190, 677, 781, 385, 861, 611, 898, 286, 778, 206, 216, 953, 797]
+
+bubbleSort(arr)
+
+print ("Sorted array(bubble sort urod):")
+for i in range(len(arr)):
+    print ("%d" % arr[i]),
+
+
+arr = [999, 565, 88, 941, 883, 500, 145, 14, 344, 999, 767, 920, 34, 796, 541]
+
+def insertionSort(arr):
+    for i in range(len(arr)):
+        temp = arr[i]
+        j = i - 1
+        while j >= 0 and temp < arr[j]:
+            arr[j+1], arr[j] = arr[j], arr[j+1]
+            j -= 1
+    return(arr)
+
+insertionSort(arr)
+
+print ("Sorted array(insetrion):")
+for i in range(len(arr)):
+    print ("%d" % arr[i]),
+
+#death
+
+arr = [131, 462, 745, 826, 114, 604, 123, 230, 862, 329, 404, 608, 505, 144, 724]
+
+def selectionSort(arr):
+	length = len(arr)
+	i = 0
+	while i < length - 1:
+		min = i
+		j = i + 1
+		while j < length:
+			if arr[j] < arr[min]:
+				min = j 
+			j+=1
+		arr[i], arr[min] = arr[min], arr[i] 
+		i+=1
+	return arr
+
+selectionSort(arr)
+print ("Sorted array(selection):")
+for i in range(len(arr)):
+    print ("%d" % arr[i]),
+
+
+
