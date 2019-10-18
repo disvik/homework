@@ -1,61 +1,134 @@
-def bubbleSort(arr):
-    length = len(arr)
+from datetime import datetime
 
-    for i in range(length):
-        for j in range(0, length - i - 1):
-            if arr[j] > arr[j + 1]:
-                temp = arr[j]
-                arr[j] = arr[j+1]
-                arr[j+1] = temp
+try:
+    f = open("ai183.txt", "r")
+except IOError:
+    print("Error! such a file does not exist")
+    print("Сheck if this file is in the folder with the code")
+    exit()
 
-arr = [314, 374, 190, 677, 781, 385, 861, 611, 898, 286, 778, 206, 216, 953, 797]
+test1, test2 = False, False
+array = []
 
-bubbleSort(arr)
+while True:
+    temp = f.read(1)
 
-print ("Sorted array(bubble sort urod):")
-for i in range(len(arr)):
-    print ("%d" % arr[i]),
+    if not temp:
+        break
+
+    if temp == "16":  #номер в журнале по списку
+        test1 = True
+        temp = f.read(1)
+
+        if temp == ":":
+            test2 = True
+
+    if test1 == True and test2 == True:
+        f.seek(f.tell() + 1)
+        temp = f.read(1)
+
+        while temp != "}":
+            array.append(temp)
+            temp = f.read(1)
+        break
+
+f.close()
+
+arrayMergeSort, arrayQuickSort, arrayHeapSort = [], [], []
+
+for i in range(len(array)):
+    arrayMergeSort.append(array[i])
+    arrayQuickSort.append(array[i])
+    arrayHeapSort.append(array[i])
+
+start_time = datetime.now()
+
+def mergeSort(arrayMergeSort):
+    if len(arrayMergeSort) > 1:
+        mid = len(arrayMergeSort) // 2
+        leftHalf = arrayMergeSort[:mid]
+        rightHalf = arrayMergeSort[mid:]
+
+        mergeSort(leftHalf)
+        mergeSort(rightHalf)
+
+        i, j, k = 0, 0, 0
+        while i < len(leftHalf) and j < len(rightHalf):
+            if leftHalf[i] < rightHalf[j]:
+                arrayMergeSort[k] = leftHalf[i]
+                i += 1
+            else:
+                arrayMergeSort[k] = rightHalf[j]
+                j += 1
+            k += 1
+
+        while i < len(leftHalf):
+            arrayMergeSort[k] = leftHalf[i]
+            i += 1
+            k += 1
+
+        while j < len(rightHalf):
+            arrayMergeSort[k] = rightHalf[j]
+            j += 1
+            k += 1
 
 
-arr = [999, 565, 88, 941, 883, 500, 145, 14, 344, 999, 767, 920, 34, 796, 541]
+def quickPas(arrayQuickSort):
+    less, equal, greater = [], [], []
 
-def insertionSort(arr):
-    for i in range(len(arr)):
-        temp = arr[i]
-        j = i - 1
-        while j >= 0 and temp < arr[j]:
-            arr[j+1], arr[j] = arr[j], arr[j+1]
-            j -= 1
-    return(arr)
-
-insertionSort(arr)
-
-print ("Sorted array(insetrion):")
-for i in range(len(arr)):
-    print ("%d" % arr[i]),
-
-#death
-
-arr = [131, 462, 745, 826, 114, 604, 123, 230, 862, 329, 404, 608, 505, 144, 724]
-
-def selectionSort(arr):
-	length = len(arr)
-	i = 0
-	while i < length - 1:
-		min = i
-		j = i + 1
-		while j < length:
-			if arr[j] < arr[min]:
-				min = j 
-			j+=1
-		arr[i], arr[min] = arr[min], arr[i] 
-		i+=1
-	return arr
-
-selectionSort(arr)
-print ("Sorted array(selection):")
-for i in range(len(arr)):
-    print ("%d" % arr[i]),
+    if len(arrayQuickSort) > 1:
+        pivot = arrayQuickSort[0]
+        for x in arrayQuickSort:
+            if x < pivot:
+                less.append(x)
+            if x == pivot:
+                equal.append(x)
+            if x > pivot:
+                greater.append(x)
+        return quickPas(less) + equal + quickPas(greater)
+    else:
+        return arrayQuickSort
 
 
+def heapSort(arrayHeapSort):
+    def siftDown(parent, limit):
+        item = arrayHeapSort[parent]
+        while True:
+            child = (parent << 1) + 1
+            if child >= limit:
+                break
+            if child + 1 < limit and arrayHeapSort[child] < arrayHeapSort[child + 1]:
+                child += 1
+            if item < arrayHeapSort[child]:
+                arrayHeapSort[parent] = arrayHeapSort[child]
+                parent = child
+            else:
+                break
+        arrayHeapSort[parent] = item
+
+    length = len(arrayHeapSort)
+    for index in range((length >> 1) - 1, -1, -1):
+        siftDown(index, length)
+    for index in range(length - 1, 0, -1):
+        arrayHeapSort[0], arrayHeapSort[index] = arrayHeapSort[index], arrayHeapSort[0]
+        siftDown(0, index)
+
+
+start_time = datetime.now()
+mergeSort(arrayMergeSort)
+end_time = datetime.now()
+print("Merge sort:\n", arrayMergeSort)
+print('Duration: {}'.format(end_time - start_time))
+
+start_time = datetime.now()
+temp = quickPas(arrayQuickSort)
+end_time = datetime.now()
+print("\nQuick sort:\n", temp)
+print('Duration: {}'.format(end_time - start_time))
+
+start_time = datetime.now()
+heapSort(arrayHeapSort)
+end_time = datetime.now()
+print("\nHeap sort:\n", arrayHeapSort)
+print('Duration: {}'.format(end_time - start_time))
 
