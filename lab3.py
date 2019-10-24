@@ -8,7 +8,7 @@ matr = [
          [-1, -1, -1, 3, 9, -1, 0, 10],
          [-1, -1, 3, -1, 10, 6, 10, 0],
        ]
-#prima
+#prima's
 def search_min(tr, vizited):
     min=max(tr)
     for ind in vizited:
@@ -32,7 +32,7 @@ print(prim(matr))
 
 
 
-#kruskala
+#kruskal's
 N, M = map(int, input().split())
 Edges = []
 for i in range(M):
